@@ -4,9 +4,17 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
 Bundle 'gmarik/vundle'
+
 Bundle 'tpope/vim-rails'
 Bundle 'tpope/vim-haml'
 Bundle 'tpope/vim-surround'
+" ends if,do,def,etc
+Bundle 'tpope/vim-endwise'
+" git wrapper
+Bundle 'tpope/vim-fugitive'
+" jumping keys for cucumber steps
+Bundle 'tpope/vim-cucucmber'
+
 Bundle 'vim-ruby/vim-ruby'
 Bundle 'vim-scripts/ruby-matchit'
 Bundle 'bronson/vim-trailing-whitespace'
@@ -15,7 +23,15 @@ Bundle 'rking/ag.vim'
 Bundle 'kien/ctrlp.vim'
 Bundle 'scrooloose/nerdtree'
 Bundle 'kchmck/vim-coffee-script'
+" insert completion by Tab
 Bundle 'ervandew/supertab'
+" easy comments
+Bundle 'tomtom/tcomment_vim'
+" highlight colors in css
+Bundle 'skammer/vim-css-color'
+
+" align lines by a pattern
+Bundle 'godlygeek/tabular'
 
 syntax enable
 filetype plugin indent on
@@ -33,6 +49,11 @@ set ruler
 set laststatus=2 " always show status line
 set smartcase
 
+"line length
+set textwidth=120
+set cc=+1
+hi ColorColumn ctermbg=7
+
 "vim-rspec
 let g:rspec_command = '!zeus test {spec}'
 map <Leader>r :call RunCurrentSpecFile()<CR>
@@ -41,8 +62,8 @@ map <Leader>l :call RunLastSpec()<CR>
 map <Leader>a :call RunAllSpecs()<CR>
 
 "save on ctrl+s
-inoremap <C-s> <esc>:w<cr>a
-nnoremap <C-s> :w<cr>a"
+noremap <silent> <C-S>  :update<CR>
+inoremap <silent> <C-S> <C-O>:update<CR>
 
 "tabs
 map <C-Left> <Esc>:tabprev<CR>
@@ -60,3 +81,12 @@ nnoremap <Leader>t :FufTag<cr>
 
 "tags
 set tags=.tags;
+
+"tabular
+let mapleader=','
+nmap <Leader>a= :Tab /=<CR>
+vmap <Leader>a= :Tab /=<CR>
+nmap <Leader>a: :Tab /:<CR>
+vmap <Leader>a: :Tab /:<CR>
+nmap <Leader>a{ :Tab /{<CR>
+vmap <Leader>a{ :Tab /{<CR>
