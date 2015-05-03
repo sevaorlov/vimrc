@@ -13,7 +13,7 @@ Bundle 'tpope/vim-endwise'
 " git wrapper
 Bundle 'tpope/vim-fugitive'
 " jumping keys for cucumber steps
-Bundle 'tpope/vim-cucucmber'
+Bundle 'tpope/vim-cucumber'
 
 Bundle 'vim-ruby/vim-ruby'
 Bundle 'vim-scripts/ruby-matchit'
@@ -32,6 +32,13 @@ Bundle 'skammer/vim-css-color'
 
 " align lines by a pattern
 Bundle 'godlygeek/tabular'
+
+" tags
+" Bundle 'xolox/vim-easytags'
+" Bundle 'xolox/vim-misc'
+
+Bundle 'bkad/CamelCaseMotion'
+
 
 syntax enable
 filetype plugin indent on
@@ -62,8 +69,9 @@ map <Leader>l :call RunLastSpec()<CR>
 map <Leader>a :call RunAllSpecs()<CR>
 
 "save on ctrl+s
-noremap <silent> <C-S>  :update<CR>
-inoremap <silent> <C-S> <C-O>:update<CR>
+nmap <c-s> :w<CR>
+vmap <c-s> <Esc><c-s>gv
+imap <c-s> <Esc><c-s>
 
 "tabs
 map <C-Left> <Esc>:tabprev<CR>
@@ -90,3 +98,13 @@ nmap <Leader>a: :Tab /:<CR>
 vmap <Leader>a: :Tab /:<CR>
 nmap <Leader>a{ :Tab /{<CR>
 vmap <Leader>a{ :Tab /{<CR>
+
+" disable arrows
+noremap <Up> <NOP>
+noremap <Down> <NOP>
+noremap <Left> <NOP>
+noremap <Right> <NOP>
+
+"easytags
+let b:easytags_auto_highlight = 0
+let g:easytags_async = 1
