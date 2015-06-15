@@ -1,43 +1,49 @@
 set nocompatible
 filetype off
-set rtp+=~/.vim/bundle/vundle/
+set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#rc()
 
-Bundle 'gmarik/vundle'
+Plugin 'gmarik/vundle'
 
-Bundle 'tpope/vim-rails'
-Bundle 'tpope/vim-haml'
-Bundle 'tpope/vim-surround'
+Plugin 'tpope/vim-rails'
+" Plugin 'tpope/vim-haml'
+Plugin 'tpope/vim-surround'
 " ends if,do,def,etc
-Bundle 'tpope/vim-endwise'
+Plugin 'tpope/vim-endwise'
 " git wrapper
-Bundle 'tpope/vim-fugitive'
+Plugin 'tpope/vim-fugitive'
 " jumping keys for cucumber steps
-Bundle 'tpope/vim-cucumber'
+Plugin 'tpope/vim-cucumber'
 
-Bundle 'vim-ruby/vim-ruby'
-Bundle 'vim-scripts/ruby-matchit'
-Bundle 'bronson/vim-trailing-whitespace'
-Bundle 'thoughtbot/vim-rspec'
-Bundle 'rking/ag.vim'
-Bundle 'kien/ctrlp.vim'
-Bundle 'scrooloose/nerdtree'
-Bundle 'kchmck/vim-coffee-script'
+Plugin 'vim-ruby/vim-ruby'
+Plugin 'vim-scripts/ruby-matchit'
+Plugin 'bronson/vim-trailing-whitespace'
+Plugin 'thoughtbot/vim-rspec'
+Plugin 'rking/ag.vim'
+Plugin 'kien/ctrlp.vim'
+Plugin 'scrooloose/nerdtree'
+Plugin 'kchmck/vim-coffee-script'
 " insert completion by Tab
-Bundle 'ervandew/supertab'
+Plugin 'ervandew/supertab'
 " easy comments
-Bundle 'tomtom/tcomment_vim'
+Plugin 'tomtom/tcomment_vim'
 " highlight colors in css
-Bundle 'skammer/vim-css-color'
+Plugin 'skammer/vim-css-color'
 
 " align lines by a pattern
-Bundle 'godlygeek/tabular'
+Plugin 'godlygeek/tabular'
 
 " tags
-" Bundle 'xolox/vim-easytags'
-" Bundle 'xolox/vim-misc'
+Plugin 'xolox/vim-easytags'
+Plugin 'xolox/vim-misc'
 
-Bundle 'bkad/CamelCaseMotion'
+Plugin 'bkad/CamelCaseMotion'
+
+Plugin 'eparreno/vim-l9'
+Plugin 'vim-scripts/FuzzyFinder'
+
+Plugin 'duythinht/inori'
+Plugin 'romainl/flattened'
 
 
 syntax enable
@@ -55,6 +61,11 @@ set autowrite " save file automatic on shell commands
 set ruler
 set laststatus=2 " always show status line
 set smartcase
+
+"colorscheme
+set background=dark
+colorscheme solarized
+
 
 "line length
 set textwidth=120
@@ -74,8 +85,8 @@ vmap <c-s> <Esc><c-s>gv
 imap <c-s> <Esc><c-s>
 
 "tabs
-map <C-Left> <Esc>:tabprev<CR>
-map <C-Right> <Esc>:tabnext<CR>
+map <C-j> <Esc>:tabprev<CR>
+map <C-k> <Esc>:tabnext<CR>
 map <C-t> <Esc>:tabnew<CR>
 
 "nerdtree
@@ -105,6 +116,10 @@ noremap <Down> <NOP>
 noremap <Left> <NOP>
 noremap <Right> <NOP>
 
-"easytags
-let b:easytags_auto_highlight = 0
-let g:easytags_async = 1
+" Source the vimrc file after saving it
+if has("autocmd")
+  autocmd bufwritepost .vimrc source $MYVIMRC
+endif
+
+let mapleader = ','
+nmap <leader>v :tabedit $MYVIMRC<CR>
