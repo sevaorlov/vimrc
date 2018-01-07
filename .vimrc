@@ -26,33 +26,24 @@ Plugin 'kchmck/vim-coffee-script'
 Plugin 'ervandew/supertab'
 " easy comments
 Plugin 'tomtom/tcomment_vim'
-" highlight colors in css
-" Plugin 'skammer/vim-css-color' " slows down haml and sass opening
 
 " align lines by a pattern
 Plugin 'godlygeek/tabular'
 
-" tags
-Plugin 'xolox/vim-easytags'
-Plugin 'xolox/vim-misc'
-
 Plugin 'bkad/CamelCaseMotion'
-
-Plugin 'eparreno/vim-l9'
-Plugin 'vim-scripts/FuzzyFinder'
 
 Plugin 'duythinht/inori'
 Plugin 'romainl/flattened'
 
-Plugin 'fatih/vim-go'
+" Plugin 'fatih/vim-go'
 
-Plugin 'bling/vim-airline'
+" Plugin 'bling/vim-airline'
 
 " Insert or delete brackets, parens, quotes in pair.
 Plugin 'jiangmiao/auto-pairs'
 
 " highlights errors
-Plugin 'scrooloose/syntastic'
+" Plugin 'scrooloose/syntastic'
 
 " snippets
 Plugin 'MarcWeber/vim-addon-mw-utils'
@@ -61,7 +52,7 @@ Plugin 'garbas/vim-snipmate'
 Plugin 'honza/vim-snippets'
 
 " cjsx syntax highlighting
-Plugin 'mtscout6/vim-cjsx'
+" Plugin 'mtscout6/vim-cjsx'
 
 syntax enable
 filetype plugin indent on
@@ -72,6 +63,7 @@ set nocompatible
 set smartindent
 
 set runtimepath^=~/.vim/bundle/*
+set relativenumber
 set number
 set tabstop=2
 set shiftwidth=2
@@ -83,23 +75,31 @@ set ruler
 set laststatus=2 " always show status line
 set smartcase
 let mapleader="\<Space>"
+set autoindent " Auto indention should be on "
+set clipboard=unnamed " Copy buffer
 
 "colorscheme
 set background=dark
 colorscheme solarized
-
 
 "line length
 set textwidth=120
 set cc=+1
 hi ColorColumn ctermbg=7
 
+set inccommand=split
+
 "vim-rspec
-let g:rspec_command = '!zeus test {spec}'
-map <Leader>r :call RunCurrentSpecFile()<CR>
-map <Leader>s :call RunNearestSpec()<CR>
-map <Leader>l :call RunLastSpec()<CR>
-map <Leader>a :call RunAllSpecs()<CR>
+if executable('zeus')
+  let g:rspec_command = '!zeus test {spec}'
+endif
+if executable('./bin/rspec')
+  let g:rspec_command = '!./bin/rspec {spec}'
+endif
+au BufRead *_spec.rb nmap <Leader>r :call RunCurrentSpecFile()<CR>
+au BufRead *_spec.rb nmap <Leader>s :call RunNearestSpec()<CR>
+au BufRead *_spec.rb nmap <Leader>l :call RunLastSpec()<CR>
+" au BufRead *_spec.rb nmap <Leader>a :call RunAllSpecs()<CR>
 
 "save on ctrl+s
 nmap <C-s> :w<CR>
@@ -113,12 +113,6 @@ map <C-t> <Esc>:tabnew<CR>
 
 "nerdtree
 map <C-n> :NERDTreeToggle<CR>
-
-"fuzzyfinder
-let g:fuf_enumeratingLimit = 30
-nnoremap <Leader>f :FufFile **/<cr>
-nnoremap <Leader>b :FufBuffer<cr>
-nnoremap <Leader>t :FufTag<cr>
 
 "tags
 set tags=.tags;
@@ -142,7 +136,8 @@ noremap <Right> <NOP>
 "   autocmd bufwritepost .vimrc source $MYVIMRC
 " endif
 
-nmap <leader>v :tabedit $MYVIMRC<CR>
+" open vimrc with leader+v
+nmap <leader>v :tabedit ~/.vimrc<CR>
 
 " select word in visual mode and press //, it will immediately search for a given word
 vnoremap // y/<C-R>"<CR>"
@@ -151,14 +146,6 @@ vnoremap // y/<C-R>"<CR>"
 let g:snipMate = {}
 let g:snipMate.scope_aliases = {}
 let g:snipMate.scope_aliases['ruby'] = 'ruby,rails'
-
-" go commands
-au FileType go set list listchars=tab:\ \ ,
-
-au FileType go nmap <leader>gr <Plug>(go-run)
-au FileType go nmap <leader>gb <Plug>(go-build)
-au FileType go nmap <leader>gt <Plug>(go-test)
-au FileType go nmap <leader>gc <Plug>(go-coverage)
 
 " The Silver Searcher
 if executable('ag')
@@ -172,8 +159,8 @@ if executable('ag')
   let g:ctrlp_use_caching = 0
 endif
 
-" bind K to grep word under cursor
-nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+" bind leader+w to grep word under cursor
+nnoremap <leader>w :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " bind \ (backward slash) to grep shortcut
 command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
@@ -182,3 +169,37 @@ nnoremap \ :Ag<SPACE>
 
 " quickfix list for breakpoints
 nmap <Leader>i :Ag binding.pry<CR>
+
+" quickfix, open files in new tab
+" set switchbuf+=usetab,newtab
+
+" open and close quickfix
+nnoremap <leader>c :ccl<CR>
+nnoremap <leader>o :cope<CR>
+
+" puts the caller
+nnoremap <leader>wtf oputs "#" * 90<c-m>puts caller<c-m>puts "#" * 90<esc>
+
+" puts method source location
+nnoremap <leader>method oputs "#" * 90<c-m>puts method(:).source_location<c-m>puts "#" * 90<esc>
+
+" binding.pry
+nnoremap <leader>deb obinding.pry<esc>
+
+" turns on logs in STDOUT in rails tests
+nnoremap <leader>log oputs "ActiveRecord::Base.logger = Logger.new(STDOUT)<esc>
+
+" GO
+nnoremap <leader>gop ofmt.Println("############")<c-m>fmt.Println()<c-m>fmt.Println("############")<UP><LEFT>
+
+let g:go_fmt_command = ""
+" let g:go_fmt_command = "goimports"
+" let g:syntastic_go_checkers = ['gometalinter']
+let g:go_def_mapping_enabled = 0
+
+au FileType go set list listchars=tab:\ \ ,
+au FileType go nmap <Leader>goi :GoImports<CR>
+au FileType go nmap <Leader>gd :GoDoc<CR>
+
+"
+nmap <Leader>gb :Gbrowse<CR>
