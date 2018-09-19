@@ -54,6 +54,9 @@ Plugin 'honza/vim-snippets'
 " cjsx syntax highlighting
 " Plugin 'mtscout6/vim-cjsx'
 
+" wrapper for Neovim terminal commands
+Plugin 'kassio/neoterm'
+
 syntax enable
 filetype plugin indent on
 
@@ -87,7 +90,22 @@ set textwidth=120
 set cc=+1
 hi ColorColumn ctermbg=7
 
-set inccommand=split
+if has('nvim')
+  set inccommand=split
+  tnoremap <C-[> <C-\><C-n>
+  tnoremap <A-h> <C-\><C-N><C-w>h
+  tnoremap <A-j> <C-\><C-N><C-w>j
+  tnoremap <A-k> <C-\><C-N><C-w>k
+  tnoremap <A-l> <C-\><C-N><C-w>l
+  inoremap <A-h> <C-\><C-N><C-w>h
+  inoremap <A-j> <C-\><C-N><C-w>j
+  inoremap <A-k> <C-\><C-N><C-w>k
+  inoremap <A-l> <C-\><C-N><C-w>l
+  nnoremap <A-h> <C-w>h
+  nnoremap <A-j> <C-w>j
+  nnoremap <A-k> <C-w>k
+  nnoremap <A-l> <C-w>l
+end
 
 "vim-rspec
 if executable('zeus')
@@ -160,7 +178,7 @@ if executable('ag')
 endif
 
 " bind leader+w to grep word under cursor
-nnoremap <leader>w :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+nnoremap <leader>f :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " bind \ (backward slash) to grep shortcut
 command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
@@ -203,3 +221,6 @@ au FileType go nmap <Leader>gd :GoDoc<CR>
 
 "
 nmap <Leader>gb :Gbrowse<CR>
+
+" switch windows
+nmap <Leader>w <C-W>w
